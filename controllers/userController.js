@@ -1,39 +1,30 @@
 const User = require('../models/userModel');
+const { createUser } = require('../services/userService');
+const { login } = require('../services/userService');
+const { validateUser } = require('../services/userService');
 
 exports.signUp = async (req, res, next) => {
     try {
-        const user = await User.create({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            birthDate: req.body.birthDate,
-            city: req.body.city,
-            country: req.body.country,
-            email: req.body.email,
-            password: req.body.password,
-            confirmPassword: req.body.confirmPassword,
-        });
+        const user = await createUser(req.body);
 
         res.status(201).json({
             status: 'created',
+            message: 'User created with success',
             data: {
                 user,
             },
-            message: 'User created with success',
         });
     } catch (e) {
         res.status(400).json({
             status: 'failed',
-            message: 'User not created',
+            message: e.message || 'User not created',
         });
     }
 };
 
 exports.signIn = async (req, res, next) => {
     try {
-        const user = await User.create({
-            email: req.body.email,
-            password: req.body.password,
-        });
+        await login(req.body);
 
         res.status(200).json({
             status: 'success',
@@ -47,4 +38,21 @@ exports.signIn = async (req, res, next) => {
     }
 };
 
-exports.updateUser = (req, res, next) => {};
+exports.updateUser = async (req, res, next) => {
+    const user = await validateUser(req.body, req.params.id);
+
+    try {
+        res.status(200).json({
+            status: 'success',
+            message: 'User update with success',
+            data: {
+                user,
+            },
+        });
+    } catch (e) {
+        res.status(400).json({
+            status: 'failed',
+            message: e.message || 'User not updated',
+        });
+    }
+};
