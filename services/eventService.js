@@ -37,10 +37,10 @@ exports.updateU = async (body, id) => {
 
 exports.readU = async query => {
     if (query) {
-        const events = await Event.find({ weekDay: query }).populate('userId');
+        const events = await Event.find({ weekDay: query });
         return events;
     } else {
-        const events = await Event.find().populate('userId');
+        const events = await Event.find();
         return events;
     }
 };

@@ -31,7 +31,7 @@ exports.getAllEvents = async (req, res) => {
 
 exports.getEventById = async (req, res) => {
     try {
-        const event = await Event.findById(req.params.id).populate('userId');
+        const event = await Event.findById(req.params.id);
 
         res.status(200).json({
             status: 'success',

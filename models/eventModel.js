@@ -7,9 +7,8 @@ const EventSchema = new mongoose.Schema({
         required: [true, 'A description is required'],
     },
     userId: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-        required: [true, 'A user id is required'],
+        type: String,
+        required: [true, 'A userId is required'],
     },
     dateTime: {
         type: Date,
