@@ -2,16 +2,21 @@ const express = require('express');
 const router = express.Router();
 
 const eventController = require('../controllers/eventController');
+const eventValidators = require('../validations/eventValidators');
 
 router
     .route('/')
-    .get(eventController.getAllEvents)
-    .post(eventController.createEvent);
+    .get(eventValidators.validateWeekDay, eventController.getAllEvents)
+    .post(eventValidators.validateEvent, eventController.createEvent)
+    .delete(
+        eventValidators.validateWeekDay,
+        eventController.deleteEventByWeekDay,
+    );
 
 router
     .route('/:id')
     .get(eventController.getEventById)
-    .put(eventController.updateEvent)
+    .put(eventValidators.validateEvent, eventController.updateEvent)
     .delete(eventController.deleteEventById);
 
 module.exports = router;
