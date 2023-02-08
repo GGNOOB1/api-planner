@@ -115,8 +115,4 @@ obs: Run Postman locally for more efficiency
     - POST http://localhost:3000/api/v1/users/signIn
     - PUT http://localhost:3000/api/v1/users/:id
 
-## License
-
-The [ISC License]() (ISC)
-
 Copyright :copyright: 2023 - 2° Projeto Compass
