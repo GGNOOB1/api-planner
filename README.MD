@@ -43,8 +43,6 @@ You will need to replace the <host> and <password>
 
 [Routes](#routes)
 
-[License](#license)
-
 ## Resources
 
 -   Node.JS v.18.12.1
