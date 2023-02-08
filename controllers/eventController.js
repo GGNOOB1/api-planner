@@ -1,5 +1,4 @@
 const Event = require('../models/eventModel');
-const User = require('../models/userModel');
 
 const { updateU } = require('../services/eventService');
 const { createU } = require('../services/eventService');
