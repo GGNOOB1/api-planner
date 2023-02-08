@@ -17,7 +17,7 @@ exports.createU = async body => {
     return event;
 };
 
-exports.update = async (body, id) => {
+exports.updateU = async (body, id) => {
     const event = await Event.findByIdAndUpdate(
         id,
         {
@@ -28,6 +28,7 @@ exports.update = async (body, id) => {
         },
         {
             new: true,
+            runValidators: true,
         },
     );
 

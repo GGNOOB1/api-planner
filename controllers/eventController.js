@@ -10,7 +10,7 @@ exports.getAllEvents = async (req, res) => {
 
         if (events.length === 0) {
             return res
-                .status(200)
+                .status(404)
                 .json({ status: 'failed', message: 'Events not found' });
         }
 

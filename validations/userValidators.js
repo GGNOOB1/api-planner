@@ -28,8 +28,7 @@ exports.validateUser = (req, res, next) => {
     if (req.body.confirmPassword != req.body.password) {
         return res.status(400).json({
             status: 'failed',
-            message:
-                'The passwords are not equals or password and confirmPassword fields is missing',
+            message: 'The passwords are not equals',
         });
     }
 
