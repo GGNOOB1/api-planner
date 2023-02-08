@@ -1,11 +1,21 @@
-const mongoose = require('mongoose');
 const Event = require('../models/eventModel');
+const User = require('../models/userModel');
 
-exports.getAllEvents = async (req, res, next) => {
+const { updateU } = require('../services/eventService');
+const { createU } = require('../services/eventService');
+const { readU } = require('../services/eventService');
+
+exports.getAllEvents = async (req, res) => {
     try {
-        const events = await Event.find();
+        const events = await readU(req.query.dayOfTheWeek);
 
-        res.status(200).json({
+        if (events.length === 0) {
+            return res
+                .status(200)
+                .json({ status: 'failed', message: 'Events not found' });
+        }
+
+        return res.status(200).json({
             status: 'success',
             results: events.length,
             data: {
@@ -17,13 +27,12 @@ exports.getAllEvents = async (req, res, next) => {
             status: 'failed',
             message: 'Not found events',
         });
-        console.log(e);
     }
 };
 
-exports.getEventById = async (req, res, next) => {
+exports.getEventById = async (req, res) => {
     try {
-        const event = await Event.findById(req.params.id);
+        const event = await Event.findById(req.params.id).populate('userId');
 
         res.status(200).json({
             status: 'success',
@@ -32,21 +41,17 @@ exports.getEventById = async (req, res, next) => {
             },
         });
     } catch (e) {
+        console.log(e);
         res.status(404).json({
             status: 'failed',
             message: 'This event not exist',
         });
-        console.log(e);
     }
 };
 
-exports.createEvent = async (req, res, next) => {
+exports.createEvent = async (req, res) => {
     try {
-        const event = await Event.create({
-            description: req.body.description,
-            userId: req.body.userId,
-            dateTime: req.body.dateTime,
-        });
+        const event = await createU(req.body);
 
         res.status(201).json({
             status: 'success',
@@ -62,19 +67,9 @@ exports.createEvent = async (req, res, next) => {
     }
 };
 
-exports.updateEvent = async (req, res, next) => {
+exports.updateEvent = async (req, res) => {
     try {
-        const event = await Event.findByIdAndUpdate(
-            req.params.id,
-            {
-                description: req.body.description,
-                dateTime: req.body.dateTime,
-            },
-            {
-                runValidators: true,
-                new: true,
-            },
-        );
+        const event = await updateU(req.body, req.params.id);
 
         res.status(200).json({
             status: 'success',
@@ -100,4 +95,21 @@ exports.deleteEventById = async (req, res, next) => {
     }
 };
 
-exports.deleteEventByWeek = (req, res, next) => {};
+exports.deleteEventByWeekDay = async (req, res) => {
+    try {
+        if (!req.query.dayOfTheWeek) {
+            res.status(404).json({
+                status: 'failed',
+                message: 'Enter a valid weekday in the query',
+            });
+        }
+        const weekDay = req.query.dayOfTheWeek;
+        await Event.deleteMany({ weekDay: weekDay });
+        res.status(204).end();
+    } catch (e) {
+        res.status(404).json({
+            status: 'failed',
+            message: e.message,
+        });
+    }
+};

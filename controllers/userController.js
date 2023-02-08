@@ -1,7 +1,8 @@
 const User = require('../models/userModel');
+
 const { createUser } = require('../services/userService');
 const { login } = require('../services/userService');
-const { validateUser } = require('../services/userService');
+const { userUpdate } = require('../services/userService');
 
 exports.signUp = async (req, res, next) => {
     try {
@@ -24,11 +25,11 @@ exports.signUp = async (req, res, next) => {
 
 exports.signIn = async (req, res, next) => {
     try {
-        await login(req.body);
+        const user = await login(req.body);
 
         res.status(200).json({
             status: 'success',
-            message: 'User logged in with successfully',
+            message: `User ${user} logged in with successfully`,
         });
     } catch (e) {
         res.status(400).json({
@@ -39,9 +40,8 @@ exports.signIn = async (req, res, next) => {
 };
 
 exports.updateUser = async (req, res, next) => {
-    const user = await validateUser(req.body, req.params.id);
-
     try {
+        const user = await userUpdate(req.body, req.params.id);
         res.status(200).json({
             status: 'success',
             message: 'User update with success',
