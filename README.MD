@@ -5,7 +5,6 @@ The planner's API aims to help the client to organize his week and his tasks and
 ## Info
 
 <p align="center">
-   <img src="http://img.shields.io/static/v1?label=License&message=MIT&color=red&style=for-the-badge"/>
    <img src="http://img.shields.io/static/v1?label=Node&message=14.18.1&color=green&style=for-the-badge&logo=node.js"/>
    <img src="http://img.shields.io/static/v1?label=MongoDB&message=5.0.3&color=green&style=for-the-badge&logo=mongodb"/>
    <img src="http://img.shields.io/static/v1?label=Typescript&message=4.4.4&color=blue&style=for-the-badge&logo=typescript"/>
