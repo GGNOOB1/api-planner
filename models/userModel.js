@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
     firstName: {
@@ -38,7 +39,16 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'A password confirm is required'],
         minLength: 5,
         maxLength: 16,
+        select: false,
     },
+});
+
+UserSchema.pre('save', async function (next) {
+    console.log(this);
+    this.password = await bcrypt.hash(this.password, 12);
+    this.confirmPassword = undefined;
+
+    next();
 });
 
 const User = mongoose.model('User', UserSchema);
